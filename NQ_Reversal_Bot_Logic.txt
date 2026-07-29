@@ -1,0 +1,68 @@
+============================================================
+ NQ 8-EMA REVERSAL BOT - HOW IT WORKS (plain English)
+ The "Rutvi" setup, now also running on Abhi
+ 2026-07-28
+============================================================
+
+THE BIG IDEA
+------------
+The bot trades REVERSALS of the trend using the 8 EMA. It waits for a
+trend to start weakening (two failed pushes) and then enters in the new
+direction, aiming for a 1:1 risk/reward.
+
+WHAT IT WATCHES
+---------------
+- Price is turned into 2-point Renko bricks (noise-filtered building
+  blocks). It tracks an 8 EMA over those bricks.
+- It also watches the 1-hour trend (8 EMA vs 21 EMA on the 1h chart).
+
+THE SHORT SETUP (uptrend rolling over)
+--------------------------------------
+1. Price is riding above the 8 EMA in an uptrend.
+2. Price breaks DOWN through the 8 EMA. That counts as break #1 - but it
+   only "counts" if the high just before it was a LOWER high than the
+   previous push up (the trend is losing steam).
+3. Price bounces, then breaks down through the 8 EMA a SECOND time off
+   another lower high. That is the trigger -> ENTER SHORT at market.
+
+THE LONG SETUP (downtrend bottoming) - the mirror image
+-------------------------------------------------------
+Two break-UPS through the 8 EMA, each off a HIGHER low -> ENTER LONG.
+
+THE 1-HOUR TREND GATE (this is the key filter)
+----------------------------------------------
+- A SHORT is only allowed if the 1-hour trend is RED (down).
+- A LONG is only allowed if the 1-hour trend is GREEN (up).
+- If the 1-hour is unclear, it skips the trade.
+So it never fights the bigger-picture direction - the reversal has to
+agree with the 1h.
+
+STOP AND TARGET
+---------------
+- Stop loss: placed just past the swing that made the signal - 2 points
+  beyond the last lower-high (for shorts) or last higher-low (for longs).
+- Take profit: 1:1 - the target is the same distance away as the stop.
+  So if the stop is 12 points away, the target is 12 points of profit.
+
+ONE TRADE PER SETUP
+-------------------
+Each two-break pattern only fires a single entry. It won't spam the same
+setup over and over.
+
+STARTUP SAFETY
+--------------
+When the bot restarts, it replays the day's price history to rebuild the
+EMA and the swing memory, but it does NOT fire any of those old/past
+setups - it only goes "live" from the moment startup finishes. (This is
+the piece I just fixed on Rutvi so it reliably takes the entry.)
+
+WHEN IT DOES NOTHING
+--------------------
+If there is no valid two-break reversal that agrees with the 1h trend,
+the bot simply sits flat and waits. No trade is normal and expected.
+
+ABHI vs RUTVI
+-------------
+Both accounts now run this exact same logic. The only difference is the
+account it trades on. Same 8 EMA, same 2-point bricks, same 1h gate,
+same 1:1 risk/reward.
